@@ -1,5 +1,5 @@
 import type { FarmSite } from '../../types/site.ts'
-import { formatCageCount, formatUpdatedDate } from '../../lib/format.ts'
+import { formatCageCount, formatDateTime } from '../../lib/format.ts'
 import { StatusBadge } from '../StatusBadge/StatusBadge.tsx'
 import styles from './SiteList.module.css'
 
@@ -31,11 +31,13 @@ export function SiteList({
                 <StatusBadge status={site.status} />
               </span>
               <span className={styles.cardId}>{site.id}</span>
-              <span className={styles.cardLocation}>{site.location}</span>
+              <span className={styles.cardLocation}>
+                {site.region}, {site.country}
+              </span>
               <span className={styles.cardMeta}>
-                {formatCageCount(site.cages)}
+                {formatCageCount(site.totalCages)}
                 <span aria-hidden="true"> · </span>
-                Updated {formatUpdatedDate(site.updatedOn)}
+                Updated {formatDateTime(site.updatedAt)}
               </span>
             </button>
           </li>
@@ -72,12 +74,14 @@ export function SiteList({
                   <span className={styles.siteId}>{site.id}</span>
                 </button>
               </th>
-              <td>{site.location}</td>
-              <td>{formatCageCount(site.cages)}</td>
+              <td>
+                {site.region}, {site.country}
+              </td>
+              <td>{formatCageCount(site.totalCages)}</td>
               <td>
                 <StatusBadge status={site.status} />
               </td>
-              <td className={styles.updated}>{formatUpdatedDate(site.updatedOn)}</td>
+              <td className={styles.updated}>{formatDateTime(site.updatedAt)}</td>
             </tr>
           ))}
         </tbody>

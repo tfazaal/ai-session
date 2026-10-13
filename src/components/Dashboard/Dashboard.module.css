@@ -40,6 +40,10 @@
   letter-spacing: -0.01em;
 }
 
+.mapPanel {
+  padding: var(--space-4) var(--space-4) 0;
+}
+
 .placeholder {
   padding: var(--space-5) var(--space-4);
 }

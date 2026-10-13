@@ -32,11 +32,11 @@
   background: var(--color-bg-subtle);
 }
 
-.table tbody tr[data-selected='true'] {
+.table tbody tr[data-selected="true"] {
   background: var(--color-blue-50);
 }
 
-.table tbody tr[data-selected='true'] th {
+.table tbody tr[data-selected="true"] th {
   box-shadow: inset 3px 0 0 var(--color-navy-800);
 }
 
@@ -93,7 +93,7 @@
   border-radius: var(--radius-sm);
 }
 
-.card[aria-pressed='true'] {
+.card[aria-pressed="true"] {
   background: var(--color-blue-50);
   border-color: var(--color-navy-800);
   box-shadow: inset 3px 0 0 var(--color-navy-800);

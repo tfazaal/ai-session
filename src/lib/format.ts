@@ -21,10 +21,32 @@ export function formatUpdatedDate(isoDate: string): string {
   }).format(date)
 }
 
+export function formatDateTime(iso: string): string {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return iso
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+    timeZoneName: 'short',
+  }).format(date)
+}
+
 export function formatCageCount(count: number): string {
   return `${count} ${count === 1 ? 'cage' : 'cages'}`
 }
 
 export function formatSiteCount(count: number): string {
   return `${count} ${count === 1 ? 'site' : 'sites'}`
+}
+
+export function formatPopulation(count: number): string {
+  return new Intl.NumberFormat('en').format(count)
+}
+
+export function formatWeightKg(kg: number): string {
+  return `${kg.toFixed(1)} kg`
 }

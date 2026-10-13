@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { StatusFilter } from '../types/site.ts'
+import type { SiteSort, StatusFilter } from '../types/site.ts'
 import {
   buildDashboardSearch,
   dashboardUrlStatesEqual,
@@ -70,6 +70,14 @@ export function useDashboardUrlState(initialSelectedId: string | null) {
     commit({ ...stateRef.current, status }, 'push')
   }
 
+  const setCountry = (country: string) => {
+    commit({ ...stateRef.current, country }, 'push')
+  }
+
+  const setSort = (sort: SiteSort) => {
+    commit({ ...stateRef.current, sort }, 'replace')
+  }
+
   const selectSite = (id: string) => {
     const next = { ...stateRef.current, selectedId: id }
     const siteChanged = stateRef.current.selectedId !== id
@@ -87,19 +95,47 @@ export function useDashboardUrlState(initialSelectedId: string | null) {
   }
 
   const clearFilters = () => {
-    commit({ ...stateRef.current, search: '', status: 'all' }, 'push')
+    commit(
+      {
+        ...stateRef.current,
+        search: '',
+        status: 'all',
+        country: '',
+        sort: 'name-asc',
+      },
+      'push',
+    )
+  }
+
+  const revealSite = (id: string) => {
+    commit(
+      {
+        search: '',
+        status: 'all',
+        country: '',
+        sort: 'name-asc',
+        selectedId: id,
+      },
+      'push',
+    )
+    setDetailOpen(true)
   }
 
   return {
     search: state.search,
     status: state.status,
+    country: state.country,
+    sort: state.sort,
     selectedId: state.selectedId,
     detailOpen,
     setSearch,
     setStatus,
     handleStatusChange,
+    setCountry,
+    setSort,
     selectSite,
     closeDetail,
     clearFilters,
+    revealSite,
   }
 }
