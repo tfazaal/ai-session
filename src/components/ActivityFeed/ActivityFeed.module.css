@@ -43,7 +43,7 @@
 
 .button:hover {
   border-color: var(--color-navy-700);
-  background: var(--color-surface-raised, #1c2128);
+  background: var(--color-bg-subtle);
 }
 
 .button:focus-visible {

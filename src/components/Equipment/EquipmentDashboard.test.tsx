@@ -67,7 +67,7 @@ describe('EquipmentDashboard', () => {
     expect(screen.getByText('Total equipment').parentElement).toHaveTextContent('3')
     expect(screen.getByText('Requires maintenance').parentElement).toHaveTextContent('1')
     expect(screen.getByText('Under maintenance').parentElement).toHaveTextContent('1')
-    expect(screen.getByText('List shows 1 with status "Requires Maintenance"')).toBeInTheDocument()
+    expect(screen.getByText('1 asset requires maintenance')).toBeInTheDocument()
 
     await user.selectOptions(screen.getByLabelText('Status filter'), 'Requires Maintenance')
 

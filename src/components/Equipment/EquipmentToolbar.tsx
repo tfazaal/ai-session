@@ -33,7 +33,7 @@ export function EquipmentToolbar({
         </select>
       </div>
       <p className={styles.note}>
-        List shows {requiringCount} with status &quot;Requires Maintenance&quot;
+        {requiringCount} {requiringCount === 1 ? 'asset requires' : 'assets require'} maintenance
       </p>
     </div>
   )

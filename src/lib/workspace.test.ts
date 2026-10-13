@@ -7,6 +7,7 @@ describe('workspace', () => {
     expect(workspaceFromPathname('/equipment/')).toBe('equipment')
     expect(workspaceFromPathname('/')).toBe('operations')
     expect(workspaceFromPathname('/operations')).toBe('operations')
+    expect(workspaceFromPathname('/foo/equipment')).toBe('operations')
   })
 
   it('builds a path for each workspace', () => {
