@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { FarmSite } from '../../types/site.ts'
@@ -53,6 +53,7 @@ function mockViewport({ narrow, wide }: { narrow: boolean; wide: boolean }) {
 afterEach(() => {
   cleanup()
   Reflect.deleteProperty(window, 'matchMedia')
+  window.history.replaceState(null, '', '/')
 })
 
 describe('Dashboard', () => {
@@ -202,6 +203,7 @@ describe('Dashboard', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'Hestøya' })).toBeInTheDocument()
     expect(screen.queryByRole('list', { name: 'Farm sites' })).not.toBeInTheDocument()
     unmount()
+    window.history.replaceState(null, '', '/')
 
     mockViewport({ narrow: false, wide: true })
     render(<Dashboard sites={sampleSites} />)
@@ -220,5 +222,57 @@ describe('Dashboard', () => {
     expect(screen.queryByRole('heading', { level: 2, name: 'Hestøya' })).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Site details' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Hestøya/ })).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('loads filters from the query string on first render', () => {
+    window.history.replaceState(null, '', '/?status=attention&q=norway')
+
+    render(<Dashboard sites={sampleSites} />)
+
+    expect(screen.getByRole('searchbox', { name: 'Search' })).toHaveValue('norway')
+    expect(screen.getByRole('radio', { name: 'Needs attention' })).toBeChecked()
+    expect(screen.getByRole('button', { name: /Rørvik North/ })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Sound of Mull/ })).not.toBeInTheDocument()
+  })
+
+  it('writes status changes to the URL for sharing and browser history', async () => {
+    const user = userEvent.setup()
+    render(<Dashboard sites={sampleSites} />)
+
+    await user.click(screen.getByRole('button', { name: /Needs attention/ }))
+    expect(window.location.search).toBe('?status=attention')
+
+    await user.click(screen.getByRole('button', { name: /Operational/ }))
+    expect(window.location.search).toBe('?status=operational')
+
+    await user.click(screen.getByRole('button', { name: /Operational/ }))
+    expect(window.location.search).toBe('')
+  })
+
+  it('restores filters when the user navigates with the browser back button', async () => {
+    const user = userEvent.setup()
+    render(<Dashboard sites={sampleSites} />)
+
+    await user.click(screen.getByRole('button', { name: /Maintenance/ }))
+    expect(window.location.search).toBe('?status=maintenance')
+
+    act(() => {
+      window.history.back()
+    })
+
+    await waitFor(() => {
+      expect(window.location.search).toBe('')
+      expect(screen.getByText(/Showing 3 of 3 sites/)).toBeInTheDocument()
+    })
+    expect(screen.getByRole('button', { name: /Hestøya/ })).toBeInTheDocument()
+  })
+
+  it('includes the selected site in the URL', async () => {
+    const user = userEvent.setup()
+    render(<Dashboard sites={sampleSites} />)
+
+    await user.click(screen.getByRole('button', { name: /Sound of Mull/ }))
+
+    expect(window.location.search).toBe('?site=SC-1')
   })
 })

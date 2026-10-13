@@ -7,7 +7,7 @@ Harborline is a frontend-only fish farm operations dashboard. Keep it that way: 
 - Site records and their types live in `src/data` and `src/types`. The UI receives records through props. `App.tsx` is the only place that loads the fixture.
 - Summary counts belong in `calculateMetrics`. Do not hardcode card values or keep a parallel summary object.
 - Search and status filtering belong in `filterSites`. Name and location are searchable. Descriptions are not. Filters combine, and the result is a new array sorted by site name.
-- `Dashboard` owns search text, status, and the selected site id. Pass data and callbacks down. Do not add a state library or a router for this single page.
+- `Dashboard` owns search text, status, and the selected site id, synced to the URL via `useDashboardUrlState` and `src/lib/dashboardUrl.ts` (`status`, `q`, `site`). Use `history.pushState` for status and site changes; use `replaceState` for search typing. Listen for `popstate`. Do not add React Router for this single page.
 - Below 1080px, opening a site replaces the list. The wide layout keeps the list and the detail panel together. Closing the wide panel clears the selection. Going back on a narrower screen keeps the selection and the current filters.
 - Switch the table to cards at `max-width: 719px` with `useMediaQuery`. Keep that query in sync with any CSS that depends on it.
 - Do not add loading or error states that imitate a network request.

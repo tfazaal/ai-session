@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import type { FarmSite, StatusFilter } from '../../types/site.ts'
 import { filterSites } from '../../lib/filterSites.ts'
 import { calculateMetrics } from '../../lib/metrics.ts'
 import { STATUS_LABELS } from '../../lib/status.ts'
+import { useDashboardUrlState } from '../../hooks/useDashboardUrlState.ts'
 import { useMediaQuery } from '../../hooks/useMediaQuery.ts'
 import { AppShell } from '../AppShell/AppShell.tsx'
 import { EmptyState } from '../EmptyState/EmptyState.tsx'
@@ -32,10 +33,18 @@ export function Dashboard({
   sites: readonly FarmSite[]
   initialSelectedId?: string | null
 }) {
-  const [search, setSearch] = useState('')
-  const [status, setStatus] = useState<StatusFilter>('all')
-  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId)
-  const [detailOpen, setDetailOpen] = useState(initialSelectedId != null)
+  const {
+    search,
+    status,
+    selectedId,
+    detailOpen,
+    setSearch,
+    setStatus,
+    handleStatusChange,
+    selectSite,
+    closeDetail,
+    clearFilters,
+  } = useDashboardUrlState(initialSelectedId)
   const isNarrow = useMediaQuery(NARROW_QUERY)
   const isWide = useMediaQuery(WIDE_QUERY)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -61,31 +70,20 @@ export function Dashboard({
     document.getElementById(`site-trigger-${id}`)?.focus()
   }, [showDetail])
 
-  function handleStatusChange(next: StatusFilter) {
-    setStatus((current) => (next !== 'all' && current === next ? 'all' : next))
-  }
-
   function handleSelect(id: string) {
-    setSelectedId(id)
-    setDetailOpen(true)
+    selectSite(id)
   }
 
   function handleClose() {
     if (isWide) {
       const id = selectedId
-      setSelectedId(null)
-      setDetailOpen(false)
+      closeDetail(true)
       if (id) document.getElementById(`site-trigger-${id}`)?.focus()
       return
     }
 
     pendingFocusId.current = selectedId
-    setDetailOpen(false)
-  }
-
-  function clearFilters() {
-    setSearch('')
-    setStatus('all')
+    closeDetail(false)
   }
 
   const clearAction = filtersActive ? clearFilters : undefined

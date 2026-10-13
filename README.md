@@ -62,6 +62,16 @@ Site records live in `src/data/sites.ts`. Each record has an id, name, location,
 
 The summary cards call `calculateMetrics`. They do not keep a second copy of those counts. Search compares the site name and location only, and the status filter is applied at the same time. Results are sorted by site name.
 
+Filter and selection state is mirrored in the URL so you can copy a link or use the browser back and forward buttons:
+
+| Query param | Meaning |
+| --- | --- |
+| `status` | `operational`, `attention`, or `maintenance` (omitted when showing all sites) |
+| `q` | Search text |
+| `site` | Selected site id |
+
+Example: `/?status=attention&q=norway&site=NO-0208`
+
 Two records, Finnmark Coast and Trongisvágur, have no description so the detail view can show that state.
 
 ## Tests
