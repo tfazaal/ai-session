@@ -1,6 +1,6 @@
 # Harborline — Fish farm operations
 
-Harborline is an internal dashboard for reviewing fish farming sites. It is a frontend-only reference application: every figure on the screen is calculated from local site records, and people can search, filter, inspect sites on a map, and open details without leaving the page.
+Harborline is an internal dashboard for fish farm operations and equipment maintenance. It is a frontend-only reference application with two workspaces: site operations, and an equipment tracker ported from the separate Project-B app. Project-B itself is left unchanged and is not the running application.
 
 ## Stack
 
@@ -16,21 +16,26 @@ There is no backend, database, authentication, or network data source for site o
 
 ```text
 src/
-  App.tsx                         # passes sites and activities into the dashboard
+  App.tsx                         # workspace shell: operations or equipment
   index.css                       # tokens, reset, and focus styles
   types/site.ts                   # site, status, sort, and environmental types
   types/activity.ts               # activity feed event types
   data/sites.ts                   # fictional site records (incl. coordinates)
   data/activities.ts              # fictional recent activity events
+  equipment/                      # equipment types, records, and maintenance rules
+  lib/workspace.ts                # operations vs equipment path
   lib/metrics.ts                  # operational summary counts
   lib/environmentalMetrics.ts     # simulated environmental overview
   lib/filterSites.ts              # search, filters, and sorting
   lib/coordinates.ts              # map coordinate helpers
   lib/dashboardUrl.ts             # URL query serialization
   lib/format.ts                   # dates, counts, and weights
-  hooks/useDashboardUrlState.ts   # URL-synced dashboard state
+  hooks/useWorkspace.ts           # pathname workspace switching
+  hooks/useDashboardUrlState.ts   # URL-synced operations state
   components/
-    Dashboard/                    # page state and composition
+    AppShell/                     # header, workspace nav, page frame
+    Dashboard/                    # operations page
+    Equipment/                    # equipment list, filter, and details
     SiteMap/                      # Leaflet map of visible sites
     EnvironmentalOverview/        # compact simulated environmental metrics
     ActivityFeed/                 # fictional recent events
@@ -82,13 +87,24 @@ Filter and selection state is mirrored in the URL:
 
 Example: `/?status=attention&q=norway&country=Norway&sort=updated-desc&site=NO-0208`
 
+## Workspaces
+
+The header switches between two areas without a router:
+
+| Path | Workspace |
+| --- | --- |
+| `/` | Operations dashboard (site search, map, and details) |
+| `/equipment` | Equipment maintenance list |
+
+Equipment records live in `src/equipment/equipment.ts`. Farm site names on those records are labels only; they are not linked to operations site ids. Status filtering and the open row stay in component state. A last-maintenance date is overdue when it is 90 or more days before today. The browser Back button returns to the previous workspace, including operations query parameters.
+
 ## Map tiles
 
 The map uses [OpenStreetMap](https://www.openstreetmap.org/copyright) raster tiles (`tile.openstreetmap.org`) for local development and demos. OpenStreetMap’s [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) discourages heavy or production traffic on the volunteer-run tile service. For a real deployment, use a commercial tile provider or self-hosted tiles and configure attribution accordingly.
 
 ## Tests
 
-Tests cover metrics, environmental calculations, filtering and sorting, URL state, coordinates, activities, dashboard interactions (with the map mocked), and the enriched site fixture.
+Tests cover metrics, environmental calculations, filtering and sorting, URL state, coordinates, activities, dashboard interactions (with the map mocked), equipment maintenance rules, equipment filtering and details, workspace navigation, and the enriched site fixture.
 
 ```bash
 npm test

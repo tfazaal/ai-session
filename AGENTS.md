@@ -1,13 +1,15 @@
 # Agent instructions
 
-Harborline is a frontend-only fish farm operations dashboard. Keep it that way: local fictional data, no backend, authentication, external APIs, or extra infrastructure.
+Harborline is a frontend-only app with two workspaces: fish farm operations and equipment maintenance. Keep it that way: local fictional data, no backend, authentication, external APIs, or extra infrastructure. Do not edit the original Project-B folder; equipment behavior lives in Project-A.
 
 ## Architecture
 
-- Site records, activity events, and their types live in `src/data` and `src/types`. The UI receives records through props. `App.tsx` is the only place that loads fixtures.
+- `App.tsx` loads fixtures and switches workspaces. Operations records live in `src/data` and `src/types`. Equipment records and rules live in `src/equipment`. The UI receives records through props.
+- Workspace is the pathname: `/` for operations and `/equipment` for equipment, via `useWorkspace` and `src/lib/workspace.ts`. Use `history.pushState` when switching, and listen for `popstate`. Do not add React Router. Do not put the workspace into the operations query string.
 - Summary counts belong in `calculateMetrics`. Environmental overview metrics belong in `calculateEnvironmentalOverview`. Do not hardcode card values or keep parallel summary objects.
 - Search, status, country, and sorting belong in `filterSites`. Name, region, country, id, and manager are searchable. Descriptions are not. Filters combine, and the result is a new array sorted per `SiteSort`.
-- `Dashboard` owns query state synced to the URL via `useDashboardUrlState` and `src/lib/dashboardUrl.ts` (`status`, `q`, `country`, `sort`, `site`). Use `history.pushState` for status, country, and site changes; use `replaceState` for search typing and sort. Listen for `popstate`. Do not add React Router for this single page.
+- `Dashboard` owns operations query state synced to the URL via `useDashboardUrlState` and `src/lib/dashboardUrl.ts` (`status`, `q`, `country`, `sort`, `site`). Use `history.pushState` for status, country, and site changes; use `replaceState` for search typing and sort. Listen for `popstate`.
+- Equipment status counts, filtering, and the 90-day overdue check belong in `src/equipment/maintenance.ts`. Equipment filter and expanded-row state stay in `EquipmentDashboard`. Do not mix them into operations URL params. Equipment farm-site names are labels, not operations site ids.
 - The map (`SiteMap`) and site list share the same filtered site array and selected site id. Marker colors follow status tokens (operational green, attention orange, maintenance blue).
 - Below 1080px, opening a site replaces the list. The wide layout keeps the list and the detail panel together. Closing the wide panel clears the selection. Going back on a narrower screen keeps the selection and the current filters.
 - Switch the table to cards at `max-width: 719px` with `useMediaQuery`. Keep that query in sync with any CSS that depends on it.

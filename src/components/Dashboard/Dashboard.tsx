@@ -10,7 +10,6 @@ import { getRecentActivities } from '../../lib/activities.ts'
 import { SIMULATION_SNAPSHOT_AT } from '../../data/sites.ts'
 import { useDashboardUrlState } from '../../hooks/useDashboardUrlState.ts'
 import { useMediaQuery } from '../../hooks/useMediaQuery.ts'
-import { AppShell } from '../AppShell/AppShell.tsx'
 import { EmptyState } from '../EmptyState/EmptyState.tsx'
 import { SiteDetail } from '../SiteDetail/SiteDetail.tsx'
 import { SiteList } from '../SiteList/SiteList.tsx'
@@ -115,7 +114,7 @@ export function Dashboard({
   const clearAction = filtersActive ? clearFilters : undefined
 
   return (
-    <AppShell siteCount={metrics.total}>
+    <>
       <div className={styles.intro}>
         <h1>Fish farm operations</h1>
         <p>Check which sites are operating, need attention, or are in maintenance.</p>
@@ -191,6 +190,6 @@ export function Dashboard({
           ) : null}
         </div>
       )}
-    </AppShell>
+    </>
   )
 }
