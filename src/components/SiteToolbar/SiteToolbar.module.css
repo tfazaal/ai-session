@@ -1,0 +1,131 @@
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.searchField {
+  min-width: 0;
+}
+
+.label {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  padding: 0;
+}
+
+.statusField {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.search {
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.search::placeholder {
+  color: var(--color-text-soft);
+}
+
+.search:hover {
+  border-color: var(--color-navy-700);
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.option {
+  position: relative;
+}
+
+.option input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.option input:checked + span {
+  background: var(--color-navy-800);
+  border-color: var(--color-navy-800);
+  color: var(--color-on-navy);
+}
+
+.option input:focus-visible + span {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.option:hover span {
+  border-color: var(--color-navy-700);
+}
+
+.summaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.count {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.clear {
+  border: 0;
+  background: transparent;
+  color: var(--color-navy-800);
+  padding: 0.2rem 0;
+  font-size: var(--text-sm);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.clear:hover {
+  color: var(--color-navy-950);
+}
+
+@media (min-width: 800px) {
+  .controls {
+    grid-template-columns: minmax(14rem, 20rem) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--space-5);
+  }
+}

@@ -1,0 +1,121 @@
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+}
+
+.panel[data-status='operational'] {
+  border-top: 3px solid var(--color-operational);
+}
+
+.panel[data-status='attention'] {
+  border-top: 3px solid var(--color-attention);
+}
+
+.panel[data-status='maintenance'] {
+  border-top: 3px solid var(--color-maintenance);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.title {
+  font-size: var(--text-xl);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.title:focus {
+  outline: none;
+}
+
+.close {
+  order: -1;
+  border: 0;
+  background: transparent;
+  color: var(--color-navy-800);
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: 650;
+}
+
+.close:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.id {
+  margin-top: var(--space-2);
+  color: var(--color-text-soft);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.statusRow {
+  margin-top: var(--space-3);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.facts dt {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.facts dd {
+  font-weight: 650;
+}
+
+.notesTitle {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: 650;
+}
+
+.notes,
+.notesMissing,
+.missing {
+  margin-top: var(--space-2);
+  max-width: 65ch;
+}
+
+.notesMissing,
+.missing {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1080px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .close {
+    order: 0;
+    flex: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .facts {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .facts dd {
+    margin-bottom: var(--space-3);
+  }
+}
