@@ -26,5 +26,6 @@
 }
 
 .action:hover {
-  background: var(--color-navy-900);
+  background: var(--color-navy-700);
+  border-color: var(--color-navy-700);
 }

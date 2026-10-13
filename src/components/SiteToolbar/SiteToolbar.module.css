@@ -119,7 +119,7 @@
 }
 
 .clear:hover {
-  color: var(--color-navy-950);
+  color: var(--color-navy-700);
 }
 
 @media (min-width: 800px) {

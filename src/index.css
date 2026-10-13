@@ -1,27 +1,28 @@
 :root {
-  --color-navy-950: #071525;
-  --color-navy-900: #10283d;
-  --color-navy-800: #16324d;
-  --color-navy-700: #1e4468;
-  --color-blue-100: #e7f0f8;
-  --color-blue-50: #f3f7fb;
-  --color-ink: #162230;
-  --color-text: #162230;
-  --color-text-muted: #3e5163;
-  --color-text-soft: #4d6174;
-  --color-bg: #eef1f4;
-  --color-bg-subtle: #f6f8fa;
-  --color-surface: #ffffff;
-  --color-border: #d5dde5;
-  --color-border-strong: #c3ced8;
-  --color-operational: #0d5c3d;
-  --color-operational-bg: #e7f5ee;
-  --color-attention: #7a4e00;
-  --color-attention-bg: #fbf4e4;
-  --color-maintenance: #1a4468;
-  --color-maintenance-bg: #e8f1f8;
+  /* GitHub-inspired dark palette */
+  --color-navy-950: #010409;
+  --color-navy-900: #0d1117;
+  --color-navy-800: #388bfd;
+  --color-navy-700: #58a6ff;
+  --color-blue-100: #21262d;
+  --color-blue-50: #1c2b41;
+  --color-ink: #e6edf3;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-text-soft: #7d8590;
+  --color-bg: #0d1117;
+  --color-bg-subtle: #21262d;
+  --color-surface: #161b22;
+  --color-border: #30363d;
+  --color-border-strong: #3d444d;
+  --color-operational: #3fb950;
+  --color-operational-bg: rgba(46, 160, 67, 0.15);
+  --color-attention: #d29922;
+  --color-attention-bg: rgba(210, 153, 34, 0.15);
+  --color-maintenance: #58a6ff;
+  --color-maintenance-bg: rgba(88, 166, 255, 0.15);
   --color-on-navy: #ffffff;
-  --font-sans: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -39,11 +40,11 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
-  --shadow-sm: 0 1px 2px rgba(16, 36, 56, 0.06);
-  --shadow-md: 0 8px 24px rgba(16, 36, 56, 0.06);
+  --shadow-sm: 0 1px 0 rgba(1, 4, 9, 0.8);
+  --shadow-md: 0 8px 24px rgba(1, 4, 9, 0.4);
   --focus-ring: 2px solid var(--color-navy-800);
   --header-height: 4rem;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 *,
@@ -88,6 +89,7 @@ button {
 
 button:disabled {
   cursor: default;
+  opacity: 0.55;
 }
 
 :focus {
@@ -100,7 +102,8 @@ button:disabled {
 }
 
 ::selection {
-  background: #d5e4f2;
+  background: #264f78;
+  color: var(--color-text);
 }
 
 .visuallyHidden {

@@ -15,7 +15,7 @@ Harborline is a frontend-only fish farm operations dashboard. Keep it that way: 
 ## Styling
 
 - Define colors, spacing, type, radius, shadow, and focus in `src/index.css`. Component modules should use those variables.
-- Use CSS Modules for component styles. Keep the theme light: navy as the primary color, neutral surfaces, and status color paired with a text label.
+- Use CSS Modules for component styles. Keep the GitHub-inspired dark theme: canvas `#0d1117`, surfaces `#161b22`, borders `#30363d`, accent `#388bfd`, and status color paired with a text label.
 - Preserve visible `:focus-visible` outlines. Do not remove keyboard access to search, status options, site rows, or the detail actions.
 - Mobile layout needs a real alternative to the table (the card list) and a compact header, not only a narrower desktop grid.
 

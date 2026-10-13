@@ -80,7 +80,7 @@
   border: 1px solid var(--color-border-strong);
   border-radius: 999px;
   padding: 0.15rem 0.6rem;
-  color: var(--color-navy-800);
+  color: var(--color-text-muted);
   font-size: var(--text-xs);
   font-weight: 650;
   letter-spacing: 0.02em;

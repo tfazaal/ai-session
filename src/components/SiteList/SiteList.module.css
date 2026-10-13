@@ -48,7 +48,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-navy-800);
+  color: var(--color-navy-700);
   font-weight: 650;
   text-align: left;
 }
@@ -108,7 +108,7 @@
 }
 
 .cardName {
-  color: var(--color-navy-800);
+  color: var(--color-text);
   font-weight: 650;
 }
 
