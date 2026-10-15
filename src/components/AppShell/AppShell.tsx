@@ -1,8 +1,23 @@
 import type { ReactNode } from 'react'
-import { formatSiteCount } from '../../lib/format.ts'
+import type { Workspace } from '../../lib/workspace.ts'
 import styles from './AppShell.module.css'
 
-export function AppShell({ siteCount, children }: { siteCount: number; children: ReactNode }) {
+const NAV_ITEMS: { id: Workspace; label: string }[] = [
+  { id: 'operations', label: 'Operations' },
+  { id: 'equipment', label: 'Equipment' },
+]
+
+export function AppShell({
+  workspace,
+  metaLabel,
+  onNavigate,
+  children,
+}: {
+  workspace: Workspace
+  metaLabel: string
+  onNavigate: (workspace: Workspace) => void
+  children: ReactNode
+}) {
   return (
     <div className={styles.shell}>
       <a className={styles.skip} href="#content">
@@ -25,9 +40,22 @@ export function AppShell({ siteCount, children }: { siteCount: number; children:
               <p className={styles.tagline}>Fish farm operations</p>
             </div>
           </div>
+          <nav className={styles.nav} aria-label="Workspaces">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={styles.navButton}
+                aria-current={workspace === item.id ? 'page' : undefined}
+                onClick={() => onNavigate(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
           <p className={styles.meta}>
             <span className={styles.environment}>Internal</span>
-            <span className={styles.count}>{formatSiteCount(siteCount)}</span>
+            <span className={styles.count}>{metaLabel}</span>
           </p>
         </div>
       </header>

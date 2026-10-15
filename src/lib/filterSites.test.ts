@@ -1,83 +1,128 @@
 import { describe, expect, it } from 'vitest'
-import { filterSites } from './filterSites.ts'
-import type { FarmSite } from '../types/site.ts'
-
-const records: FarmSite[] = [
-  {
-    id: 'NO-1',
-    name: 'Hestøya',
-    location: 'Nordland, Norway',
-    cages: 12,
-    status: 'operational',
-    updatedOn: '2026-10-11',
-    description: 'Sheltered site.',
-  },
-  {
-    id: 'NO-2',
-    name: 'Rørvik North',
-    location: 'Trøndelag, Norway',
-    cages: 8,
-    status: 'attention',
-    updatedOn: '2026-10-12',
-    description: 'Overnight oxygen drop in two cages.',
-  },
-  {
-    id: 'SC-1',
-    name: 'Sound of Mull',
-    location: 'Argyll, Scotland',
-    cages: 1,
-    status: 'maintenance',
-    updatedOn: '2026-10-06',
-  },
-]
+import { filterSites, getSiteCountries } from './filterSites.ts'
+import { sampleFarmSites } from '../test/fixtures/sites.ts'
 
 describe('filterSites', () => {
-  it('returns every site, sorted by name, when search and status are open', () => {
-    const result = filterSites(records, { search: '   ', status: 'all' })
+  it('returns every site, sorted by name, when filters are open', () => {
+    const result = filterSites(sampleFarmSites, {
+      search: '   ',
+      status: 'all',
+      country: '',
+      sort: 'name-asc',
+    })
 
     expect(result.map((site) => site.name)).toEqual(['Hestøya', 'Rørvik North', 'Sound of Mull'])
   })
 
   it('matches site names without case sensitivity', () => {
-    const result = filterSites(records, { search: '  HEST ', status: 'all' })
+    const result = filterSites(sampleFarmSites, {
+      search: '  HEST ',
+      status: 'all',
+      country: '',
+      sort: 'name-asc',
+    })
 
     expect(result.map((site) => site.id)).toEqual(['NO-1'])
   })
 
-  it('matches location text, including the country', () => {
-    const result = filterSites(records, { search: 'scotland', status: 'all' })
+  it('matches country and region text', () => {
+    const result = filterSites(sampleFarmSites, {
+      search: 'scotland',
+      status: 'all',
+      country: '',
+      sort: 'name-asc',
+    })
 
     expect(result.map((site) => site.id)).toEqual(['SC-1'])
   })
 
   it('does not search the description', () => {
-    const result = filterSites(records, { search: 'oxygen', status: 'all' })
+    const result = filterSites(sampleFarmSites, {
+      search: 'oxygen',
+      status: 'all',
+      country: '',
+      sort: 'name-asc',
+    })
 
     expect(result).toEqual([])
   })
 
   it('filters by operational status', () => {
-    const result = filterSites(records, { search: '', status: 'maintenance' })
+    const result = filterSites(sampleFarmSites, {
+      search: '',
+      status: 'maintenance',
+      country: '',
+      sort: 'name-asc',
+    })
 
     expect(result.map((site) => site.status)).toEqual(['maintenance'])
   })
 
-  it('applies search and status together', () => {
-    const result = filterSites(records, { search: 'norway', status: 'attention' })
+  it('filters by country', () => {
+    const result = filterSites(sampleFarmSites, {
+      search: '',
+      status: 'all',
+      country: 'Norway',
+      sort: 'name-asc',
+    })
+
+    expect(result.map((site) => site.id)).toEqual(['NO-1', 'NO-2'])
+  })
+
+  it('applies search, status, and country together', () => {
+    const result = filterSites(sampleFarmSites, {
+      search: 'norway',
+      status: 'attention',
+      country: 'Norway',
+      sort: 'name-asc',
+    })
 
     expect(result.map((site) => site.id)).toEqual(['NO-2'])
   })
 
+  it('sorts by cage count descending', () => {
+    const result = filterSites(sampleFarmSites, {
+      search: '',
+      status: 'all',
+      country: '',
+      sort: 'cages-desc',
+    })
+
+    expect(result.map((site) => site.totalCages)).toEqual([12, 8, 1])
+  })
+
+  it('sorts by updated date ascending', () => {
+    const result = filterSites(sampleFarmSites, {
+      search: '',
+      status: 'all',
+      country: '',
+      sort: 'updated-asc',
+    })
+
+    expect(result.map((site) => site.id)).toEqual(['SC-1', 'NO-1', 'NO-2'])
+  })
+
   it('returns no sites when the combined filters exclude everything', () => {
-    const result = filterSites(records, { search: 'norway', status: 'maintenance' })
+    const result = filterSites(sampleFarmSites, {
+      search: 'norway',
+      status: 'maintenance',
+      country: '',
+      sort: 'name-asc',
+    })
 
     expect(result).toEqual([])
   })
 
   it('does not mutate the original list', () => {
-    const original = [...records]
-    filterSites(records, { search: 'norway', status: 'all' })
+    const original = [...sampleFarmSites]
+    filterSites(sampleFarmSites, { search: 'norway', status: 'all', country: '', sort: 'name-asc' })
 
-    expect(records).toEqual(original)
+    expect(sampleFarmSites).toEqual(original)
+  })
+})
+
+describe('getSiteCountries', () => {
+  it('returns unique sorted country names', () => {
+    expect(getSiteCountries(sampleFarmSites)).toEqual(['Norway', 'United Kingdom'])
   })
 })

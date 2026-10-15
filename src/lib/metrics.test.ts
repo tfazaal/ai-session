@@ -5,9 +5,14 @@ import type { FarmSite } from '../types/site.ts'
 function site(overrides: Partial<FarmSite> & Pick<FarmSite, 'id' | 'status'>): FarmSite {
   return {
     name: overrides.id,
-    location: 'Nordland, Norway',
-    cages: 2,
-    updatedOn: '2026-10-01',
+    country: 'Norway',
+    region: 'Nordland',
+    manager: 'Test Manager',
+    totalCages: 2,
+    activeCages: 2,
+    updatedAt: '2026-10-01T12:00:00Z',
+    lastInspectionOn: '2026-10-01',
+    nextInspectionOn: '2026-11-01',
     ...overrides,
   }
 }

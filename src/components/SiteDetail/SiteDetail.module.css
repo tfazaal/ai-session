@@ -6,15 +6,15 @@
   padding: var(--space-4);
 }
 
-.panel[data-status='operational'] {
+.panel[data-status="operational"] {
   border-top: 3px solid var(--color-operational);
 }
 
-.panel[data-status='attention'] {
+.panel[data-status="attention"] {
   border-top: 3px solid var(--color-attention);
 }
 
-.panel[data-status='maintenance'] {
+.panel[data-status="maintenance"] {
   border-top: 3px solid var(--color-maintenance);
 }
 
@@ -75,6 +75,22 @@
 
 .facts dd {
   font-weight: 650;
+}
+
+.sectionTitle {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
+.simulatedNote {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-soft);
+  max-width: 65ch;
 }
 
 .notesTitle {
