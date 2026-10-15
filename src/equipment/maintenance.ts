@@ -39,13 +39,14 @@ export function isMaintenanceOverdue(
   referenceDate: Date = new Date(),
 ): boolean {
   const [year, month, day] = lastMaintenanceDate.split('-').map(Number)
-  const lastService = new Date(year, month - 1, day)
-  lastService.setHours(0, 0, 0, 0)
+  const lastServiceDay = Date.UTC(year, month - 1, day)
+  const todayDay = Date.UTC(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
+  )
 
-  const today = new Date(referenceDate)
-  today.setHours(0, 0, 0, 0)
-
-  const elapsedDays = (today.getTime() - lastService.getTime()) / (1000 * 60 * 60 * 24)
+  const elapsedDays = (todayDay - lastServiceDay) / (1000 * 60 * 60 * 24)
   return elapsedDays >= MAINTENANCE_INTERVAL_DAYS
 }
 
