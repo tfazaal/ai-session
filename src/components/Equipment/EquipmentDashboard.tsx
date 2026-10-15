@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   countRequiringMaintenance,
   countUnderMaintenance,
@@ -17,13 +17,26 @@ const NARROW_QUERY = '(max-width: 719px)'
 export function EquipmentDashboard({ equipment }: { equipment: readonly Equipment[] }) {
   const [status, setStatus] = useState<EquipmentStatusFilter>('all')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const pendingFocusId = useRef<string | null>(null)
   const compact = useMediaQuery(NARROW_QUERY)
 
   const visible = useMemo(() => filterEquipment(equipment, status), [equipment, status])
   const requiringCount = countRequiringMaintenance(equipment)
 
+  useEffect(() => {
+    if (selectedId !== null || pendingFocusId.current === null) return
+    const id = pendingFocusId.current
+    pendingFocusId.current = null
+    document.getElementById(`equipment-trigger-${id}`)?.focus()
+  }, [selectedId])
+
   function toggleDetails(id: string) {
     setSelectedId((current) => (current === id ? null : id))
+  }
+
+  function closeDetails() {
+    pendingFocusId.current = selectedId
+    setSelectedId(null)
   }
 
   return (
@@ -60,7 +73,7 @@ export function EquipmentDashboard({ equipment }: { equipment: readonly Equipmen
             selectedId={selectedId}
             compact={compact}
             onToggle={toggleDetails}
-            onClose={() => setSelectedId(null)}
+            onClose={closeDetails}
           />
         )}
       </section>

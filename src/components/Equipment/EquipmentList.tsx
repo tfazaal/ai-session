@@ -51,6 +51,7 @@ export function EquipmentList({
                   <button
                     type="button"
                     className={styles.action}
+                    id={`equipment-trigger-${item.id}`}
                     aria-expanded={expanded}
                     onClick={() => onToggle(item.id)}
                   >
@@ -110,6 +111,7 @@ export function EquipmentList({
                     <button
                       type="button"
                       className={styles.action}
+                      id={`equipment-trigger-${item.id}`}
                       aria-expanded={expanded}
                       onClick={() => onToggle(item.id)}
                     >

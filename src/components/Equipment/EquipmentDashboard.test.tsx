@@ -80,7 +80,8 @@ describe('EquipmentDashboard', () => {
     render(<EquipmentDashboard equipment={records} />)
 
     const row = screen.getByRole('row', { name: /Primary Feed Blower/ })
-    await user.click(within(row).getByRole('button', { name: 'Details' }))
+    const detailsButton = within(row).getByRole('button', { name: 'Details' })
+    await user.click(detailsButton)
 
     const detail = screen.getByRole('region', { name: 'Primary Feed Blower details' })
     expect(within(detail).getByText('FF-AST-1001')).toBeInTheDocument()
@@ -88,6 +89,7 @@ describe('EquipmentDashboard', () => {
 
     await user.click(screen.getByRole('button', { name: 'Close' }))
     expect(screen.queryByRole('heading', { level: 3, name: 'Primary Feed Blower' })).not.toBeInTheDocument()
+    expect(detailsButton).toHaveFocus()
   })
 
   it('shows an empty state when the filter matches nothing', async () => {
